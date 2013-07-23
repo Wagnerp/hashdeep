@@ -3,6 +3,11 @@
 	* src/dig.cpp: Fixed issue 301 re: removing double dots from path
 	* Makefile.am: Removed sha3deep target
 
+2013-07-23  Jesse Kornblum  <research@jessekornblum.com>:
+
+	* Makefile.am: Removed svn calls
+	* CONFIGURE_CROSS.sh: Script to download and install OS X cross compilers
+
 2013-07-09  Jesse Kornblum  <research@jessekornblum.com>:
 
 	* hashlist.cpp: Fixes problem with known files with commas in filename.

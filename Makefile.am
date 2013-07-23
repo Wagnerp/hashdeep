@@ -10,7 +10,7 @@ nice:
 	rm -f *~ man/*~ src/*~ doc/*~
 
 preflight:
-	grep RBF */*.{c,cpp,h,1} doc/* AUTHORS README NEWS TODO ChangeLog 
+	grep RBF */*.{c,cpp,h,1} doc/* AUTHORS README NEWS TODO ChangeLog
 
 todo:
 	@grep TODO *.c *.h ${man_MANS} AUTHORS README NEWS ChangeLog
@@ -18,17 +18,17 @@ todo:
 	@echo From TODO file:
 	@cat TODO
 
-win32: 
+win32:
 	make distclean
-	./configure --host=$(CROSS32_PREFIX) 
+	./configure --host=$(CROSS32_PREFIX)
 	make
 	/bin/rm -f /tmp/strings.txt
 	strings src/md5deep.exe > /tmp/strings.txt
 	if grep pthreadGC2.dll /tmp/strings.txt ; then echo not statically linked ; exit 1; fi
 
-win64: 
+win64:
 	make distclean
-	./configure --host=$(CROSS64_PREFIX) 
+	./configure --host=$(CROSS64_PREFIX)
 	make
 	/bin/rm -f /tmp/strings.txt
 	strings src/md5deep.exe > /tmp/strings.txt
@@ -43,30 +43,30 @@ win64:
 strip32:
 	$(CROSS32_PREFIX)-strip src/*.exe src/*.exe
 strip64:
-	$(CROSS64_PREFIX)-strip src/*64.exe 
+	$(CROSS64_PREFIX)-strip src/*64.exe
 
-windist: 
-	@echo 
-	@echo Making win32 
+windist:
+	@echo
+	@echo Making win32
 	@echo
 	rm -rf $(distdir).zip $(distdir) src/*.exe
 	mkdir $(distdir)
-	make win32 
-	make strip32 
+	make win32
+	make strip32
 	cp src/*.exe $(distdir)
 	@echo ====================================
-	@echo 
-	@echo Making win32 
+	@echo
+	@echo Making win32
 	make win64
 	make strip64
 	make man/hashdeep.txt man/md5deep.txt
 	cp src/*.exe $(distdir)
 	@echo ====================================
-	@echo 
+	@echo
 	@echo Creating ZIP archive
-	@echo 
+	@echo
 	zip -r9 $(distdir).zip $(distdir)
-	@echo Adding text files to $(distdir).zip 
+	@echo Adding text files to $(distdir).zip
 	cp NEWS			$(distdir)/CHANGES.txt
 	cp COPYING		$(distdir)/COPYING.txt
 	cp FILEFORMAT		$(distdir)/FILEFORMAT.txt
@@ -89,8 +89,7 @@ wintest:
 	zip md5deep-wintest.zip -9 $(distdir).zip tests/* tests/*.zip tests/*.sh tests/testfiles/ tests/testfiles/*txt tests/testfiles/*/*txt tests/testfiles/*/*/*txt
 
 world:
-	svn update
-	@echo meta-build system. 
+	@echo meta-build system.
 	@echo Making both Linux and Windows distributions
 	make distclean
 	./configure CFLAGS="-Wall -W -g -ggdb -O0"
