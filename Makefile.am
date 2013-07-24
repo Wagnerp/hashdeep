@@ -4,7 +4,8 @@ SUBDIRS = src tests man tests/testfiles
 CROSS32_PREFIX = i686-w64-mingw32
 CROSS64_PREFIX = x86_64-w64-mingw32
 
-EXTRA_DIST = FILEFORMAT config.guess config.sub  m4/ax_pthread.m4 CONFIGURE_FC.sh
+EXTRA_DIST = FILEFORMAT config.guess config.sub m4/ax_pthread.m4 \
+	CONFIGURE_CROSS.sh
 
 nice:
 	rm -f *~ man/*~ src/*~ doc/*~

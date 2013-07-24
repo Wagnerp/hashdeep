@@ -4,6 +4,8 @@
 
       Added case insensitive auditing with -E mode
 
+      Windows programs now cross compiled from OS X with modern compiler
+
 * Bug Fixes
 
       Added checks against user errors on Hashdeep command line
