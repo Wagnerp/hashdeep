@@ -20,10 +20,12 @@ press any key to continue...
 EOF
 read
 
+
+
 if [ ! `uname` == 'Darwin' ]; then
-  echo ERROR: This script is intended for OS X systems.
-  echo Once you go Mac, you never go back...
-  exit 1
+    echo ERROR: This script is intended for OS X systems.
+    echo Once you go Mac, you never go back...
+    exit 1
 fi
 
 if [[ ! -x `which wget` ]]; then
@@ -32,25 +34,29 @@ if [[ ! -x `which wget` ]]; then
     exit 1
 fi
 
+
+
 echo Ready to install.
 echo
-echo Installing Mingw-w64 cross compiler packages...
+echo Installing Mingw-w64 cross compiler packages.
 echo For information, please see:
 echo http://mingw-w64.sourceforge.net/download.php#automated-builds
 echo
 I686_DATE=20130531
 I686_FILENAME=mingw-w32-bin_i686-darwin_$I686_DATE.tar.bz2
 if [ ! -r $I686_FILENAME ]; then
-    echo Downloading 32-bit cross compiler
-    wget "http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Automated%20Builds/mingw-w32-bin_i686-darwin_$I686_DATE.tar.bz2/download" > $I686_FILENAME
+    echo Downloading 32-bit cross compiler...
+    wget -O $I686_FILENAME "http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Automated%20Builds/mingw-w32-bin_i686-darwin_$I686_DATE.tar.bz2/download"
 fi
 
 X64_DATE=20130615
 X64_FILENAME=mingw-w64-bin_i686-darwin_$X64_DATE.tar.bz2
 if [ ! -r $X64_FILENAME ]; then
-    echo Downloading 64-bit cross compiler
-    wget "http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Automated%20Builds/mingw-w64-bin_i686-darwin_$X64_DATE.tar.bz2/download" > $X64_FILENAME
+    echo Downloading 64-bit cross compiler...
+    wget -O $X64_FILENAME "http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Automated%20Builds/mingw-w64-bin_i686-darwin_$X64_DATE.tar.bz2/download"
 fi
+
+
 
 echo
 echo Expanding cross compilers...
@@ -63,11 +69,19 @@ cd ../x86_64-w64-mingw32
 tar jxf ../$X64_FILENAME
 cd ..
 
+
+
 echo
 echo Installing cross compilers. Please enter your password at the prompt:
 echo
 sudo mkdir -p /usr/local
+
+# Remove old versions first, just in case
+sudo rm -rf /usr/local/i686-w64-mingw32 /usr/local/x86_64-w64-mingw32
+
 sudo mv i686-w64-mingw32 x86_64-w64-mingw32 /usr/local
+
+
 
 echo
 echo Getting pthreads...
@@ -75,8 +89,10 @@ echo
 if [ ! -r pthreads-w32-2-9-1-release.tar.gz ]; then
   wget ftp://sourceware.org/pub/pthreads-win32/pthreads-w32-2-9-1-release.tar.gz
 fi
-/bin/rm -rf pthreads-w32-2-9-1-release
+rm -rf pthreads-w32-2-9-1-release
 tar xfz pthreads-w32-2-9-1-release.tar.gz
+
+
 
 echo
 echo Compiling pthreads...
@@ -87,12 +103,12 @@ pushd pthreads-w32-2-9-1-release
     PATH=/usr/local/$CROSS/bin:$PATH make CROSS=$CROSS- CFLAGS="-DHAVE_STRUCT_TIMESPEC -I." clean GC-static
     sudo install implement.h need_errno.h pthread.h sched.h semaphore.h /usr/local/$CROSS/mingw/include/
     if [ $? != 0 ]; then
-      echo "Unable to install pthreads header for $CROSS"
+      echo Unable to install pthreads header for $CROSS
       exit 1
     fi
     sudo install *.a /usr/local/$CROSS/mingw/lib/
     if [ $? != 0 ]; then
-      echo "Unable to install pthreads library for $CROSS"
+      echo Unable to install pthreads library for $CROSS
       exit 1
     fi
     make clean
@@ -102,19 +118,24 @@ echo
 echo Successfully installed pthreads.
 
 
-## RBF - Add new compilers to $PATH in .profile
-## RBF - Do we need to update/remove the compiler flags for cross compilation?
 
 echo
 echo Adding cross compilers to PATH environment variable
 echo
+PATHS_TO_ADD=""
 for CROSS in i686-w64-mingw32 x86_64-w64-mingw32
 do
-    if [[ echo $PATH | grep /usr/local/$CROSS/bin -eq 1 ]]; then
-	echo ADDING $CROSS
+    BINDIR=/usr/local/$CROSS/bin
+    if [[ `echo $PATH | grep $BINDIR` ]]; then
+	PATHS_TO_ADD+=:$BINDIR
     fi
 done
-
+if [[ $PATHS_TO_ADD ]];then
+    echo "\n# Added by Hashdeep Cross Compiler Script\n"\
+	"export PATH=\$PATH$PATHS_TO_ADD\n" >> ~/.profile
+    echo Your .profile file has been modified.
+    echo You may need to spawn a new shell to run the cross compilers.
+fi
 
 
 

@@ -76,12 +76,6 @@ windist:
 	rm man/md5deep.txt man/hashdeep.txt
 	zip --to-crlf $(distdir).zip $(distdir)/*.txt
 	rm -rf $(distdir) $(WINDOWSDOCS) MD5DEEP.1 HASHDEEP.1
-	@echo "*************************"
-	@echo "*** THE WORLD IS MADE ***"
-	@echo ""
-	ls -l $(distdir).*
-	@echo ""
-	@unzip -l $(distdir).zip
 
 wintest:
 	@echo Will create md5deep-wintest.zip, a zip file that
@@ -96,6 +90,12 @@ world:
 	./configure CFLAGS="-Wall -W -g -ggdb -O0"
 	make dist
 	make windist
+	@echo "*************************"
+	@echo "*** THE WORLD IS MADE ***"
+	@echo ""
+	ls -l $(distdir).*
+	@echo ""
+	@unzip -l $(distdir).zip
 
 CLEANFILES = man/md5deep.txt man/hashdeep.txt
 SUFFIXES = .txt .1
