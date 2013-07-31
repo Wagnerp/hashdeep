@@ -7,8 +7,9 @@
 ALGS=md5.c md5.h sha1.c sha1.h sha256.c sha256.h sha3.h sha3.c whirlpool.c whirlpool.h tiger.c tiger.h
 all_sources = $(ALGS) main.cpp hashlist.cpp multihash.cpp display.cpp \
 	hash.cpp dig.cpp helpers.cpp xml.cpp xml.h files.cpp common.h main.h \
-	utf8.h utf8/checked.h utf8/core.h utf8/unchecked.h \
+	utf8.h checked.h core.h unchecked.h \
 	threadpool.h threadpool.cpp winpe.cpp winpe.h
+EXTRA_DIST=utf8
 
 hashdeep_SOURCES = $(all_sources)
 md5deep_SOURCES = $(all_sources)
