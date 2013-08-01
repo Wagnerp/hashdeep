@@ -14,12 +14,12 @@ hashdeep_SOURCES = $(all_sources)
 md5deep_SOURCES = $(all_sources)
 sha1deep_SOURCES = $(all_sources)
 sha256deep_SOURCES = $(all_sources)
-sha3deep_SOURCES = $(all_sources)
+#sha3deep_SOURCES = $(all_sources)
 whirlpooldeep_SOURCES = $(all_sources)
 tigerdeep_SOURCES = $(all_sources)
 
 bin_PROGRAMS = hashdeep \
-	md5deep sha1deep sha256deep sha3deep whirlpooldeep tigerdeep
+	md5deep sha1deep sha256deep whirlpooldeep tigerdeep
 
 # Yes, this is gross; it would be better to make them all with hard links.
 # But this works. That didn't.
