@@ -6,6 +6,7 @@
 2013-08-01  Jesse Kornblum  <research@jessekornblum.com>:
 
 	* dist/pthreads: Removed old version of pthreads
+	* src/Makefile.am: Removed sha3deep target
 
 2013-07-23  Jesse Kornblum  <research@jessekornblum.com>:
 
